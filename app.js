@@ -53,8 +53,9 @@ function askForInput() {
     .then((response) => {
       inVal = response.value;
       if (inVal === "false") {
-        const renderhtml = render(employeesHtml);
-        console.log(renderhtml);
+        const renderHtml = render(employeesHtml);
+        console.log(renderHtml);
+        fs.writeFileSync(outputPath, renderHtml);
       } else {
         askQuestion();
       }

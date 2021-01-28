@@ -10,10 +10,11 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
-var inVal = "true";
+var inVal = true;
 
 var loginType = "";
 const employeesHtml = [];
+const employeeType = ["Manager", "Engineer", "Intern"];
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
@@ -22,8 +23,10 @@ function askQuestion() {
   inquirer
     .prompt([
       {
-        type: "input",
-        message: "What is the employee type",
+        type: "list",
+        message: "What is the employee type?",
+        choices: employeeType,
+        default:employeeType[0],
         name: "value",
       },
     ])
@@ -45,17 +48,27 @@ function askForInput() {
   inquirer
     .prompt([
       {
-        type: "input",
-        message: "Do you want to enter another employee enter (true or false) ",
+        type: "confirm",
+        message: "Do you want to enter another employee?",
+        default: false,
         name: "value",
       },
     ])
     .then((response) => {
       inVal = response.value;
-      if (inVal === "false") {
+      console.log(inVal);
+      if (!inVal) {
         const renderHtml = render(employeesHtml);
-        console.log(renderHtml);
+        //console.log(renderHtml);
+        if( !fs.existsSync(OUTPUT_DIR)){
+          fs.mkdir(OUTPUT_DIR, { recursive: true }, (err) => {
+            if (err) throw err;
+          });
+              fs.writeFileSync(outputPath, renderHtml);
+      }else {
         fs.writeFileSync(outputPath, renderHtml);
+      }
+        
       } else {
         askQuestion();
       }
@@ -77,12 +90,12 @@ function manager() {
       },
       {
         type: "input",
-        message: "What is your Email",
+        message: "What is your Email?",
         name: "email",
       },
       {
         type: "input",
-        message: "What is your office Number",
+        message: "What is your office Number?",
         name: "office",
       },
     ])
@@ -114,12 +127,12 @@ function engineer() {
       },
       {
         type: "input",
-        message: "What is your Email",
+        message: "What is your Email?",
         name: "email",
       },
       {
         type: "input",
-        message: "What is your github name",
+        message: "What is your github name?",
         name: "github",
       },
     ])
@@ -150,12 +163,12 @@ function intern() {
       },
       {
         type: "input",
-        message: "What is your Email",
+        message: "What is your Email?",
         name: "email",
       },
       {
         type: "input",
-        message: "What is your school",
+        message: "What is your school?",
         name: "school",
       },
     ])

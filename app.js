@@ -13,12 +13,14 @@ const render = require("./lib/htmlRenderer");
 var inVal = true;
 
 var loginType = "";
-const employeesHtml = [];
-const employeeType = ["Manager", "Engineer", "Intern"];
+const employeesHtml = []; // Store each employee object
+const employeeType = ["Manager", "Engineer", "Intern"];  // Type of member in the team
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 
+
+// Function to know the type of member in the team
 function askQuestion() {
   inquirer
     .prompt([
@@ -42,8 +44,7 @@ function askQuestion() {
     });
 }
 
-askQuestion();
-
+// Function to know if the user wants to input another employee
 function askForInput() {
   inquirer
     .prompt([
@@ -75,6 +76,8 @@ function askForInput() {
     });
 }
 
+
+// Funtion to ask employee type manager the right questions
 function manager() {
   inquirer
     .prompt([
@@ -112,6 +115,7 @@ function manager() {
     });
 }
 
+// Funtion to ask employee type engineer the right questions
 function engineer() {
   inquirer
     .prompt([
@@ -148,6 +152,7 @@ function engineer() {
     });
 }
 
+// Funtion to ask employee type intern the right questions
 function intern() {
   inquirer
     .prompt([
@@ -184,6 +189,8 @@ function intern() {
       askForInput();
     });
 }
+
+askQuestion();
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will

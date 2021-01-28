@@ -57,7 +57,7 @@ function askForInput() {
     ])
     .then((response) => {
       inVal = response.value;
-      console.log(inVal);
+      //console.log(inVal);
       if (!inVal) {
         const renderHtml = render(employeesHtml);
         //console.log(renderHtml);

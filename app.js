@@ -14,11 +14,10 @@ var inVal = true;
 
 var loginType = "";
 const employeesHtml = []; // Store each employee object
-const employeeType = ["Manager", "Engineer", "Intern"];  // Type of member in the team
+const employeeType = ["Manager", "Engineer", "Intern"]; // Type of member in the team
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
-
 
 // Function to know the type of member in the team
 function askQuestion() {
@@ -28,7 +27,7 @@ function askQuestion() {
         type: "list",
         message: "What is the employee type?",
         choices: employeeType,
-        default:employeeType[0],
+        default: employeeType[0],
         name: "value",
       },
     ])
@@ -61,21 +60,19 @@ function askForInput() {
       if (!inVal) {
         const renderHtml = render(employeesHtml);
         //console.log(renderHtml);
-        if( !fs.existsSync(OUTPUT_DIR)){
+        if (!fs.existsSync(OUTPUT_DIR)) {
           fs.mkdir(OUTPUT_DIR, { recursive: true }, (err) => {
             if (err) throw err;
           });
-              fs.writeFileSync(outputPath, renderHtml);
-      }else {
-        fs.writeFileSync(outputPath, renderHtml);
-      }
-        
+          fs.writeFileSync(outputPath, renderHtml);
+        } else {
+          fs.writeFileSync(outputPath, renderHtml);
+        }
       } else {
         askQuestion();
       }
     });
 }
-
 
 // Funtion to ask employee type manager the right questions
 function manager() {
@@ -85,21 +82,25 @@ function manager() {
         type: "input",
         message: "What is your user name?",
         name: "username",
+        validate: validateName,
       },
       {
         type: "input",
         message: "What is your Id?",
         name: "Id",
+        validate: validateId,
       },
       {
         type: "input",
         message: "What is your Email?",
         name: "email",
+        validate: validateEmail,
       },
       {
         type: "input",
         message: "What is your office Number?",
         name: "office",
+        validate: validateOfficeNumber,
       },
     ])
     .then((response) => {
@@ -123,21 +124,25 @@ function engineer() {
         type: "input",
         message: "What is your user name?",
         name: "username",
+        validate: validateName,
       },
       {
         type: "input",
         message: "What is your Id?",
         name: "Id",
+        validate: validateId,
       },
       {
         type: "input",
         message: "What is your Email?",
         name: "email",
+        validate: validateEmail,
       },
       {
         type: "input",
         message: "What is your github name?",
         name: "github",
+        validate: validateGithub,
       },
     ])
     .then((response) => {
@@ -160,21 +165,25 @@ function intern() {
         type: "input",
         message: "What is your user name?",
         name: "username",
+        validate: validateName,
       },
       {
         type: "input",
         message: "What is your Id?",
         name: "Id",
+        validate: validateId,
       },
       {
         type: "input",
         message: "What is your Email?",
         name: "email",
+        validate: validateEmail,
       },
       {
         type: "input",
         message: "What is your school?",
         name: "school",
+        validate: validateSchool,
       },
     ])
     .then((response) => {
@@ -191,6 +200,50 @@ function intern() {
 }
 
 askQuestion();
+
+const validateName = async (input) => {
+  if (typeof input !== "string" || !input.trim().length) {
+    return "Expected parameter name to be a non-empty string";
+  }
+  return true;
+};
+
+const validateEmail = async (input) => {
+  if (!/\S+@\S+\.\S+/.test(input)) {
+    return "Expecting Email to be a non-empty valid email";
+  }
+  return true;
+};
+
+const validateId = async (input) => {
+  var val = parseInt(input);
+  if (typeof val !== "number" || isNaN(val) || val < 0) {
+    return "Expected parameter Id to be a non-negative number";
+  }
+  return true;
+};
+
+const validateSchool = async (input) => {
+  if (typeof input !== "string" || !input.trim().length) {
+    return "Expected parameter School to be a non-empty string";
+  }
+  return true;
+};
+
+const validateGithub = async (input) => {
+  if (typeof input !== "string" || !input.trim().length) {
+    return "Expected parameter Github to be a non-empty string";
+  }
+  return true;
+};
+
+const validateOfficeNumber = async (input) => {
+  var val = parseInt(input);
+  if (typeof val !== "number" || isNaN(val) || val < 0) {
+    return "Expected parameter Office Number to be a non-negative number";
+  }
+  return true;
+};
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
